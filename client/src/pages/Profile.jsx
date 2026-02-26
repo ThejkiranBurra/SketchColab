@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import API_URL from '../config';
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -19,7 +20,7 @@ const Profile = () => {
             const token = sessionStorage.getItem('token');
             if (!token) return navigate('/login');
             try {
-                const res = await axios.get('http://127.0.0.1:5000/api/auth/me', {
+                const res = await axios.get(`${API_URL}/api/auth/me`, {
                     headers: { 'x-auth-token': token },
                 });
                 setUser(res.data.user);
@@ -39,7 +40,7 @@ const Profile = () => {
         setMessage('');
         try {
             const token = sessionStorage.getItem('token');
-            const res = await axios.put('http://127.0.0.1:5000/api/auth/profile',
+            const res = await axios.put(`${API_URL}/api/auth/profile`,
                 { displayName },
                 { headers: { 'x-auth-token': token } }
             );
@@ -91,8 +92,8 @@ const Profile = () => {
                 {/* Success/Error Message */}
                 {message && (
                     <div className={`mb-6 p-4 rounded-2xl border text-sm font-semibold text-center animate-fade-in-up ${message.includes('success')
-                            ? 'bg-green-500/10 border-green-500/20 text-green-400'
-                            : 'bg-red-500/10 border-red-500/20 text-red-400'
+                        ? 'bg-green-500/10 border-green-500/20 text-green-400'
+                        : 'bg-red-500/10 border-red-500/20 text-red-400'
                         }`}>
                         {message}
                     </div>

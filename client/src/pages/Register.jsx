@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
+import API_URL from '../config';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -32,7 +33,7 @@ const Register = () => {
         setLoading(true);
         try {
             console.log('Sending registration request...');
-            const res = await axios.post('http://127.0.0.1:5000/api/auth/register', {
+            const res = await axios.post(`${API_URL}/api/auth/register`, {
                 displayName: formData.displayName,
                 email: formData.email,
                 password: formData.password,
@@ -53,7 +54,7 @@ const Register = () => {
         setError('');
         try {
             console.log('Google login success (from register), sent to backend...');
-            const res = await axios.post('http://127.0.0.1:5000/api/auth/google', {
+            const res = await axios.post(`${API_URL}/api/auth/google`, {
                 credential: credentialResponse.credential
             });
             console.log('Backend response:', res.data);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import API_URL from '../config';
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -22,7 +23,7 @@ const Dashboard = () => {
                 return;
             }
             try {
-                const res = await axios.get('http://127.0.0.1:5000/api/auth/me', {
+                const res = await axios.get(`${API_URL}/api/auth/me`, {
                     headers: { 'x-auth-token': token },
                 });
                 setUser(res.data.user);
@@ -48,7 +49,7 @@ const Dashboard = () => {
         setError('');
         try {
             const token = sessionStorage.getItem('token');
-            const res = await axios.post('http://127.0.0.1:5000/api/room/create', {}, {
+            const res = await axios.post(`${API_URL}/api/room/create`, {}, {
                 headers: { 'x-auth-token': token }
             });
             navigate(`/whiteboard/${res.data.roomId}`);
@@ -67,7 +68,7 @@ const Dashboard = () => {
         setError('');
         try {
             const token = sessionStorage.getItem('token');
-            const res = await axios.post('http://127.0.0.1:5000/api/room/join', { roomId: joinRoomId }, {
+            const res = await axios.post(`${API_URL}/api/room/join`, { roomId: joinRoomId }, {
                 headers: { 'x-auth-token': token }
             });
             navigate(`/whiteboard/${res.data.roomId}`);

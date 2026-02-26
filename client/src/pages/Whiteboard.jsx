@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Conferencing from '../components/Conferencing';
+import API_URL from '../config';
 
 const Whiteboard = () => {
     const { roomId } = useParams();
@@ -73,13 +74,13 @@ const Whiteboard = () => {
 
         const fetchUserAndRoom = async () => {
             try {
-                const userRes = await axios.get('http://127.0.0.1:5000/api/auth/me', {
+                const userRes = await axios.get(`${API_URL}/api/auth/me`, {
                     headers: { 'x-auth-token': token },
                 });
                 const userData = userRes.data.user;
                 setUser(userData);
 
-                const roomRes = await axios.post('http://127.0.0.1:5000/api/room/join', { roomId }, {
+                const roomRes = await axios.post(`${API_URL}/api/room/join`, { roomId }, {
                     headers: { 'x-auth-token': token }
                 });
 
@@ -166,7 +167,7 @@ const Whiteboard = () => {
 
         if (!socketRef.current) {
             console.log("Initializing socket connection for user:", user.displayName);
-            socketRef.current = io('http://127.0.0.1:5000');
+            socketRef.current = io(API_URL);
         }
 
         const socket = socketRef.current;
@@ -276,7 +277,7 @@ const Whiteboard = () => {
             pagesRef.current = updatedPages;
             setPages(updatedPages);
 
-            const response = await axios.post('http://127.0.0.1:5000/api/room/save', {
+            const response = await axios.post(`${API_URL}/api/room/save`, {
                 roomId,
                 pages: updatedPages
             }, {
@@ -773,7 +774,7 @@ const Whiteboard = () => {
         }
         try {
             const token = sessionStorage.getItem('token');
-            await axios.put('http://127.0.0.1:5000/api/room/update-title',
+            await axios.put(`${API_URL}/api/room/update-title`,
                 { roomId, title: tempTitle },
                 { headers: { 'x-auth-token': token } }
             );

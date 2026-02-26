@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { Server } = require('socket.io');
+const path = require('path');
 
 dotenv.config();
 
@@ -50,6 +51,16 @@ app.use('/api/room', roomRoutes);
 app.get('/', (req, res) => {
     res.send('SketchColab API is running...');
 });
+
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+    // Set static folder
+    app.use(express.static(path.join(__dirname, '../client/dist')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '..', 'client', 'dist', 'index.html'));
+    });
+}
 
 const PORT = process.env.PORT || 5000;
 function startServer() {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import API_URL from '../config';
 import {
     BarChart,
     Bar,
@@ -36,13 +37,13 @@ const Analytics = () => {
             try {
                 console.log('Fetching analytics data...');
                 // Fetch user info
-                const userRes = await axios.get('http://127.0.0.1:5000/api/auth/me', {
+                const userRes = await axios.get(`${API_URL}/api/auth/me`, {
                     headers: { 'x-auth-token': token },
                 });
                 setUser(userRes.data.user);
 
                 // Fetch analytics
-                const analyticsRes = await axios.get('http://127.0.0.1:5000/api/room/analytics', {
+                const analyticsRes = await axios.get(`${API_URL}/api/room/analytics`, {
                     headers: { 'x-auth-token': token },
                 });
                 setStats(analyticsRes.data);

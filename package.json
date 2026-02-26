@@ -1,0 +1,11 @@
+{
+  "name": "sketchcolab-root",
+  "version": "1.0.0",
+  "scripts": {
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install",
+    "build-client": "cd client && npm run build",
+    "start": "cd server && node index.js",
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "build": "cd client && npm install && npm run build"
+  }
+}
